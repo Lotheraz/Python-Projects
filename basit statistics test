@@ -1,0 +1,34 @@
+
+import math
+import statistics
+
+numbers  =[164,167,169,173,174,177,178,179,179,182,183,184,188,189,194]
+
+
+average =(sum(numbers) /len(numbers))
+
+
+print("Gjennomsnittet er ", +average)
+
+
+
+median =(statistics.median(numbers))
+
+modus=(statistics.mode(numbers))
+
+
+print("Modus er ", + modus)
+
+print(" Median er", + median)
+"""if len(numbers) % 2 ==0:
+    print((numbers[len(numbers) // 2] + numbers[len(numbers) // 2 - 1]) / 2) 
+else:
+    print(numbers[len(numbers) // 2])"""
+
+standardDeviation = statistics.stdev(numbers)
+
+print("Standard avviket er " , + standardDeviation)    
+
+variance =(statistics.variance(numbers))
+
+print(" Variansen er " , + variance)
