@@ -1,0 +1,257 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan 14 13:58:54 2025
+
+@author: Ove Andre Tidemansen
+
+PS: Everything is in English as that is the standard within any job in coding/development anywhere in the world. 
+I have made it in one file will all the tasks within , but separated them with code block/cells so each of them can be ran separately. 
+
+"""
+import datetime
+
+
+#%%
+"""
+ Oppgave1
+ User inputs their year of birth, it then calculates the age, and prints the result to the console.
+ Added tests to check for invalid input in the form of actual year and signs. That is the case for several of the assignments, but as it is
+ not a requirement I did not waste time doing every imaginable test on all of them unless otherwise specified or clearly needed. 
+"""
+
+
+current_year = datetime.datetime.now().year
+
+# print(f" It's currently the year: {current_year}")
+# Just a test for the datatime function to check if it works, it does. 
+
+while True:
+    try:
+        birth_year = input('What year were you born? ')
+        if not birth_year.isdigit() or int(birth_year) <= 0:
+            raise ValueError("Please enter a valid positive number without special characters.")
+        birth_year = int(birth_year)
+        if birth_year >= current_year:
+            raise ValueError("You cannot be born in the current year or a future year.")
+        if current_year - birth_year > 130:
+            raise ValueError("The year entered is too far in the past. Please enter a more realistic year.")
+        break
+    except ValueError as error_message:
+        print(error_message)
+
+age_in_2025 = 2025 - birth_year
+print(f"You will be {age_in_2025} years old in 2025.")
+
+
+
+#%%
+#Oppgave2
+import math
+
+number_of_pupils = int(input('How many pupils will attend? (Enter only integers please):' ))
+# Imported the math module to use the ceil function to round up to the nearest int 
+pizzas_required = math.ceil(number_of_pupils / 4)
+
+print(f"You will need to purchase {pizzas_required} pizzas")
+
+#%%
+#Oppgave3
+"""
+I have to be honest, I did not understand the object of this assignment, this was almost a copy paste of the assignment and complete
+so I may not have done it correctly or missunderstood
+"""
+import numpy as np
+
+# Define a function to convert degrees to radians
+def degrees_to_radians(degrees):
+    return degrees * np.pi / 180
+
+v_grad = float(input('Enter the angle in degrees: '))
+v_rad = degrees_to_radians(v_grad)
+print(f"The angle {v_grad} degrees is equal to {v_rad:.6f} radians.")
+
+#%%
+#Oppgave4
+# Oppgave a : Dictionary with countries, capitals, and populations
+# This dictionary will not get expanded upon or saved when a new additions is made (if the program is restarted), for that I could have used JSON, 
+# but since it was not mentioned that it was required I did not add this, it will persist while the program is running
+# and works as intended there
+# Oppgave a : Dictionary with countries, capitals, and populations
+data = {
+    "Norway": ["Oslo", 0.634],
+    "England": ["London", 8.982],
+    "France": ["Paris", 2.161],
+    "Italy": ["Rome", 2.873]
+}
+
+
+# Oppgave b: Query the dictionary
+def query_country():
+    country = input("Enter a country name: ").title()
+    if country in data:
+        capital, population = data[country]
+        print(f"{capital} is the capital of {country}, and it has {population:.3f} million inhabitants.")
+    else:
+        print(f"The country '{country}' is not in the dictionary, select option 3 to view all available countries.")
+
+
+# Oppgave c: Add or update country data
+def add_or_update_country():
+    while True:
+        country = input("Enter the name of the country: ").title()
+        if not country.replace(" ", "").isalpha():
+            print("Country names must only contain letters and spaces.")
+        else:
+            break
+
+    while True:
+        capital = input(f"Enter the capital of {country}: ").title()
+        if not capital.replace(" ", "").isalpha():
+            print("Capital names must only contain letters and spaces.")
+        else:
+            break
+
+    while True:
+        try:
+            population = float(input(f"Enter the population (in millions) of {capital} (up to 3 decimal places): "))
+            if population <= 0:
+                raise ValueError("Population must be a positive number.")
+            # Limit population to 3 decimal places as to be in line with the provided dictionary 
+            population = round(population, 3)
+            break
+        except ValueError as e:
+            print(e)
+
+    data[country] = [capital, population]
+    print(f"The dictionary has been updated with: {country}: [{capital}, {population:.3f}].")
+    print("\nUpdated dictionary:")
+    for country, info in data.items():
+        print(f"{country}: Capital: {info[0]}, Population: {info[1]:.3f} million")
+
+
+# Main program loop
+def main():
+    while True:
+        print("\nOptions:")
+        print("1. Query a country")
+        print("2. Add or update a country")
+        print("3. Display the entire dictionary")
+        print("4. Exit")
+
+        choice = input("Enter your choice (1-4): ")
+        if choice == "1":
+            query_country()
+        elif choice == "2":
+            add_or_update_country()
+        elif choice == "3":
+            print("\nCurrent dictionary:")
+            for country, info in data.items():
+                print(f"{country}: Capital: {info[0]}, Population: {info[1]:.3f} million")
+        elif choice == "4":
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 4.")
+
+# Run main
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+#%%
+#Oppgave5  
+""" 
+Program to calculate the area and circumference of a shape consisting of a right triangle and a half-circle
+Formulas used in the program: base = a , height = b
+1. Area of a triangle: (base(a) * height(b)) / 2
+2. Hypotenuse of a right triangle: sqrt(base^2 + height^2)
+3. Radius of the half-circle: base(a) / 2
+4. Area of a half-circle: (pi * radius^2) / 2
+5. Circumference: (pi * radius) + hypotenuse + height
+"""
+
+
+import math
+
+# Function to calculate the area and outer circumference
+def calculate_area_and_circumference(a, b):
+    # Area of the triangle
+    area_triangle = (a * b) / 2
+
+    # Hypotenus of the triangle (c)
+    hypotenuse = math.sqrt(a**2 + b**2)
+
+    # Radius of the half-circle is half of 'a'
+    radius = a / 2
+
+    # Area of the half-circle
+    area_half_circle = (math.pi * radius**2) / 2
+
+    # Total area of the figure
+    total_area = area_triangle + area_half_circle
+
+    # circumference
+    # Sum of the half-circle's curved edge, hypotenuse, and height 'b'
+    circumference = (math.pi * radius) + hypotenuse + b
+
+    return total_area, circumference
+
+# Input validation function
+def get_positive_float(prompt):
+    while True:
+        try:
+            value = input(prompt)
+            if not value.replace('.', '', 1).isdigit() or float(value) <= 0:
+                raise ValueError("Please enter a valid positive number.")
+            return float(value)
+        except ValueError as e:
+            print(e)
+
+# Input values for a and b
+a = get_positive_float("Enter the base of the triangle (a): ")
+b = get_positive_float("Enter the height of the triangle (b): ")
+
+# Calculate the area and outer circumference
+area, circumference = calculate_area_and_circumference(a, b)
+
+# Print the results
+print(f"The total area of the figure is {area:.2f} square units.")
+print(f"The circumference of the figure is {circumference:.2f} units.")
+
+#%%
+#Oppgave6
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Definer the function f(x)
+def f(x):
+    return -x**2 - 5
+
+# Generated x values over the interval [-10, 10]
+x = np.linspace(-10, 10, 200)
+
+# Computes the corresponding y values
+y = f(x)
+
+
+
+# Plots the function
+plt.plot(x, y, label='$f(x) = -x^2 - 5$')
+
+# Add labels etc
+plt.xlabel('X')
+plt.ylabel('f(x)      Y') 
+plt.title('Plot of the function $f(x) = -x^2 - 5$')
+plt.axhline(0, color='red', linewidth=0.9, linestyle='--')  # Add x-axis
+plt.axvline(0, color='green', linewidth=0.9, linestyle='--')  # Add y-axis
+plt.legend()
+
+
+plt.grid()
+plt.show()
+
+
+
